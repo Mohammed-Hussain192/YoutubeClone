@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= user.name %> - Profile | V-YouTube</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    /* 🔄 Loader Styles */
+    #loader {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spinner {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #ff0000;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffffff;
+      padding: 10px 20px;
+    }
+
+    .logo {
+      font-size: 20px;
+      color: #ff0000;
+    }
+
+    .navbar a, .navbar i {
+      color: #000000;
+      margin-left: 15px;
+      text-decoration: none;
+    }
+
+    .main {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #ffffff;
+      height: 100vh;
+      padding-top: 20px;
+      border-right: 2px solid black;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar li {
+      padding: 12px 20px;
+    }
+
+    .sidebar a {
+      color: #000000;
+      text-decoration: none;
+    }
+
+    .profile-content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .profile-card {
+      background-color: #f0f0f0;
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .profile-card label {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .profile-card input {
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border: 1px solid #999;
+      border-radius: 6px;
+      width: 100%;
+    }
+
+    .save-button {
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .save-button:hover {
+      background-color: #cc0000;
+    }
+
+    .suc {
+      height: 50px;
+      width: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(246, 52, 42);
+      color: white;
+      left: 35%;
+      top: 0;
+      position: absolute;
+      z-index: 2000;
+      font-size: 1vw;
+      border-radius: 0px 0px 10px 10px;
+      border: 1px solid rgb(255, 255, 255);
+      text-transform: capitalize;
+      font-weight: 400;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔄 Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ✅ Success Message -->
+  <% if (suc.length > 0) { %>
+    <p class="suc"><%= suc %></p>
+  <% } %>
+
+  <!-- 🔺 Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <h2 class="logo"><i class="fab fa-youtube"></i> V-YouTube</h2>
+    </div>
+    <div class="navbar-right">
+      <a href="/home"><i class="fas fa-home"></i></a>
+      <a href="/shorts"><i class="fas fa-photo-video"></i></a>
+      <a href="/library"><i class="fas fa-folder"></i></a>
+      <a href="/profile"><i class="fas fa-user-circle"></i></a>
+    </div>
+  </nav>
+
+  <!-- 🧭 Sidebar + Profile -->
+  <div class="main">
+    <aside class="sidebar">
+      <ul>
+        <li><i class="fas fa-home"></i> <a href="/home">Home</a></li>
+        <li><i class="fas fa-photo-video"></i> <a href="/shorts">Shorts</a></li>
+        <li><i class="fas fa-folder"></i> <a href="/library">Library</a></li>
+        <li><i class="fab fa-youtube" style="color: black;"></i> <a href="/subscribe" target="_blank">Subscribed</a></li>
+        <li><i class="fas fa-user"></i> <a href="/profile">Profile</a></li>
+      </ul>
+    </aside>
+
+    <section class="profile-content">
+      <h1>My Profile</h1>
+
+      <div class="profile-card">
+        <form action="/update-profile" method="POST">
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" value="<%= user.name %>" required>
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" value="<%= user.email %>" required>
+
+          <label for="password">Password:</label>
+          <input type="password" id="pass" name="password" value="<%= user.password %>" required>
+
+          <button type="submit" class="save-button">Save Changes</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- GSAP Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js"></script>
+
+  <!-- Custom Scripts -->
+  <script src="/javascripts/login.js"></script>
+
+  <!-- 🔄 Loader hide script -->
+  <script>
+    window.addEventListener('load', () => {
+      document.getElementById('loader').style.display = 'none';
+    });
+
+    const pass = document.querySelector("#pass");
+    pass.addEventListener("mouseover", () => {
+      pass.type = "text";
+    });
+    pass.addEventListener("mouseleave", () => {
+      pass.type = "password";
+    });
+  </script>
+
+</body>
+</html>

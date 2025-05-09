@@ -1,0 +1,145 @@
+/* Reset & Base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #33333300;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-left, .navbar-center, .navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left .logo {
+  margin-left: 10px;
+  font-size: 22px;
+  color: rgb(255, 5, 5);
+}
+
+.navbar-center input {
+  width: 700px;
+  height: 40px;
+  border: 2px solid #000000;
+  border-radius: 20px 0 0 20px;
+  background-color: #aa9b9b00;
+  text-align: center;
+  outline: none;
+}
+
+.navbar-center button {
+  height: 40px;
+  width: 40px;
+  border: 2px solid #000000;
+  border-left: none;
+  background-color: #ffffff;
+  border-radius: 0 20px 20px 0;
+  cursor: pointer;
+}
+
+.navbar-right i {
+  font-size: 20px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+/* Main Layout */
+.main {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  padding: 20px 10px;
+  background: #ffffff;
+  height: calc(100vh - 60px);
+  border-right: 1px solid #333;
+  position: sticky;
+  top: 60px;
+}
+
+.sidebar ul {
+  list-style: none;
+  position: relative;
+  left: 25%;
+  top: 2%;
+}
+
+.sidebar li {
+  margin-bottom: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+}
+
+.sidebar a {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+
+/* Shorts Viewer */
+.videos {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  height: 100vh;
+}
+
+.shorts-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.shorts-container iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 12px;
+}
+
+.info {
+  margin-top: 10px;
+  text-align: center;
+  color: rgb(0, 0, 0);
+}
+
+.info h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.info p {
+  font-size: 14px;
+  color: gray;
+}
+
+/* Smooth Scroll Animation */
+html {
+  scroll-behavior: smooth;
+}

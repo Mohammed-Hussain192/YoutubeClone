@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="/styles/login.css"/>
+  <style>
+    /* 🔴 YouTube-style loader */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .yt-loader {
+      width: 50px;
+      height: 50px;
+      border: 6px solid #ff0000;
+      border-top: 6px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 🔴 Loader -->
+  <div id="loader">
+    <div class="yt-loader"></div>
+  </div>
+
+  <div class="login-container">
+    <% if(suc.length > 0) { %>
+      <p class="suc"><%= suc %></p>
+    <% } %>
+    <h3>Log In</h3>
+    <div class="login-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo" />
+      <form action="/login/user" method="post">
+        <input type="email" name="email" placeholder="Email" required/>
+        <input type="password" name="pass" placeholder="Password" minlength="8" required/>
+        <input class="button" type="submit" value="Login"/>
+      </form>
+      <p class="register-link">
+        Not registered? <a href="/register">Create an account</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- 📜 GSAP + Loader JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/javascripts/login.js"></script> 
+
+  <!-- 🔄 Hide loader after page loads -->
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      if (loader) {
+        gsap.to(loader, { opacity: 0, duration: 0.5, onComplete: () => loader.style.display = "none" });
+      }
+    });
+  </script>
+</body>
+</html>

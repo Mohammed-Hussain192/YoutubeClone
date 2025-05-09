@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Clone</title>
+  <link rel="stylesheet" href="/styles/home.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    /* Loader styles */
+    #loader-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loader -->
+  <div id="loader-wrapper">
+    <div id="loader"></div>
+  </div>
+
+  <!-- 🔺 Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <h2 class="logo"><i class="fab fa-youtube"></i> V-YouTube</h2>
+    </div>
+    <div class="navbar-center">
+      <form action="/genratevideos" method="GET">
+        <input type="text" name="search" placeholder="Search" />
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+    <div class="navbar-right">
+      <i class="fas fa-kvideo"></i>
+      <i class="fas fa-lbell"></i>
+      <a href="/profile"><i class="fas fa-user-circle"></i></a>
+    </div>
+  </nav>
+
+  <!-- 🧭 Sidebar -->
+  <div class="main">
+    <aside class="sidebar">
+      <ul>
+        <li><i class="fas fa-home" style="color: black;"></i> <a href="/home">Home</a></li>
+        <li><i class="fas fa-photo-video" style="color: black;"></i> <a href="/shorts">Shorts</a></li>
+        <li><i class="fas fa-folder" style="color: black;"></i> <a href="/library" target="_blank">Library</a></li>
+        <li><i class="fab fa-youtube" style="color: black;"></i> <a href="/subscribe" target="_blank">Subscribed</a></li>
+        <li><i class="fas fa-user" style="color: black;"></i> <a href="/profile" target="_blank">Profile</a></li>
+      </ul>
+    </aside>
+
+    <!-- 📺 Video Grid -->
+    <section class="videos">
+        <% videos.forEach(video => { %>
+            <div class="video-card">
+              <a href="/watch/<%= video.id.videoId || video.id %>" target="_blank" rel="noopener noreferrer">
+                <img src="<%= video.snippet.thumbnails.medium.url %>" alt="Thumbnail" />
+                <h3><%= video.snippet.title %></h3>
+                <p><%= video.snippet.channelTitle %></p>
+              </a>
+            </div>
+        <% }) %>
+    </section>
+  </div>
+
+  <!-- JS to hide loader after page load -->
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader-wrapper");
+      loader.style.display = "none";
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Saved Videos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    body {
+      background: #ffffff;
+      color: #000000;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 100vw;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 9999;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #loader h1 {
+      color: red;
+      font-size: 3vw;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      background: #ffffff;
+      border-bottom: 1px solid #ccc;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0 20px;
+    }
+
+    .navbar-left .logo {
+      font-size: 22px;
+      color: red;
+    }
+
+    .navbar-center input {
+      width: 500px;
+      height: 40px;
+      border: 2px solid #000;
+      border-radius: 20px 0 0 20px;
+      background: transparent;
+      text-align: center;
+      outline: none;
+      color: #000;
+    }
+
+    .navbar-center button {
+      height: 40px;
+      width: 40px;
+      border: 2px solid #000;
+      border-left: none;
+      border-radius: 0 20px 20px 0;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .navbar-right i {
+      font-size: 20px;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    .main {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 200px;
+      padding: 20px 10px;
+      background: #fff;
+      height: calc(100vh - 60px);
+      border-right: 1px solid #333030;
+      position: sticky;
+      top: 60px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      color: #000;
+      padding-left: 20px;
+    }
+
+    .sidebar li {
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin-bottom: 25px;
+    }
+
+    .video-card {
+      display: flex;
+      width: 75%;
+      background: #fff;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      height: 160px;
+    }
+
+    .video-thumbnail {
+      width: 180px;
+      height: 160px;
+      flex-shrink: 0;
+    }
+
+    .video-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-info {
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .video-info h2 {
+      font-size: 16px;
+      margin: 0 0 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .video-info p {
+      color: #555;
+      font-size: 13px;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .remove-btn {
+      margin-top: 10px;
+      background: red;
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      width: fit-content;
+    }
+
+    .suc {
+      height: 50px;
+      width: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(246, 52, 42);
+      color: white;
+      left: 35%;
+      bottom: 90%;
+      position: absolute;
+      z-index: 1000;
+      font-size: 1vw;
+      border-radius: 0px 0px 10px 10px;
+      border: 1px solid white;
+      text-transform: capitalize;
+      font-weight: 400;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding-left: 10px;
+      }
+
+      .video-card {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .video-thumbnail {
+        width: 100%;
+        height: 200px;
+      }
+
+      .navbar-center input {
+        width: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <h1>V-YouTube</h1>
+  </div>
+
+  <% if(suc.length>0) { %>
+    <p class="suc"><%= suc %></p>
+  <% } %>
+
+  <nav class="navbar">
+    <div class="navbar-left">
+      <h2 class="logo"><i class="fab fa-youtube"></i> V-YouTube</h2>
+    </div>
+    <div class="navbar-center">
+      <form action="/genratevideos" method="GET">
+        <input type="text" name="search" placeholder="Search" />
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+    <div class="navbar-right">
+      <i class="fas fa-video"></i>
+      <i class="fas fa-bell"></i>
+      <a href="/profile"><i class="fas fa-user-circle"></i></a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <aside class="sidebar">
+      <ul>
+        <li><i class="fas fa-home"></i> <a href="/home">Home</a></li>
+        <li><i class="fas fa-photo-video"></i> <a href="/shorts">Shorts</a></li>
+        <li><i class="fas fa-folder"></i> <a href="/library">Library</a></li>
+        <li><i class="fab fa-youtube"></i> <a href="/subscribe">Subscribed</a></li>
+        <li><i class="fas fa-user"></i> <a href="/profile">Profile</a></li>
+      </ul>
+    </aside>
+
+    <div class="container">
+      <h1>Saved Videos</h1>
+      <% if (dins && dins.length > 0) { %>
+        <% dins.forEach(video => { %>
+          <form action="/remove/saved" method="POST">
+            <input type="hidden" name="id" value="<%= video.id %>">
+            <input type="hidden" name="title" value="<%= video.title %>">
+            <input type="hidden" name="channelTitle" value="<%= video.channelTitle %>">
+            <input type="hidden" name="thumbnail" value="<%= video.thumbnail %>">
+            <input type="hidden" name="url" value="<%= video.url %>">
+            <input type="hidden" name="email" value="<%= video.email %>">
+
+            <div class="video-card">
+              <div class="video-thumbnail">
+                <a href="/watch/<%= video.id %>">
+                  <img src="<%= video.thumbnail %>" alt="<%= video.title %>">
+                </a>
+              </div>
+              <div class="video-info">
+                <h2><%= video.title %></h2>
+                <p><strong>Channel:</strong> <%= video.channelTitle %></p>
+                <button type="submit" class="remove-btn">
+                  <i class="fas fa-trash"></i> Remove from Library
+                </button>
+              </div>
+            </div>
+          </form>
+        <% }) %>
+      <% } else { %>
+        <p>No saved videos yet.</p>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Plain JS to hide loader -->
+  <script>
+    window.addEventListener("load", function () {
+      const loader = document.getElementById("loader");
+      loader.style.opacity = "0";
+      loader.style.transition = "opacity 0.5s ease";
+      setTimeout(() => {
+        loader.style.display = "none";
+      }, 500);
+    });
+  </script>
+</body>
+</html>
+

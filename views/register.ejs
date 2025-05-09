@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link rel="stylesheet" href="/styles/reg.css" />
+
+  <style>
+    /* Loader Styles */
+    #loader {
+      position: fixed;
+      z-index: 9999;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .spinner {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #ff0000;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .suc {
+      height: 50px;
+      width: 30%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(246, 52, 42);
+      color: white;
+      left: 35%;
+      top: 0;
+      position: absolute;
+      z-index: 2000;
+      font-size: 1vw;
+      border-radius: 0px 0px 10px 10px;
+      border: 1px solid rgb(255, 255, 255);
+      text-transform: capitalize;
+      font-weight: 400;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔄 Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="login-container">
+    <% if(suc.length > 0) { %>
+      <p class="suc"><%= suc %></p>
+    <% } %>
+    <h3>Create Account</h3>
+    <div class="login-box">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube Logo" class="logo" />
+
+      <form action="/register/user" method="post">
+        <input type="text" name="name" placeholder="Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input class="button" type="submit" value="Register" />
+      </form>
+
+      <p class="register-link">
+        Already Created ? <a href="/">Login</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/javascripts/login.js"></script> 
+
+  <!-- 🔄 Loader Hide Script -->
+  <script>
+    window.addEventListener('load', () => {
+      document.getElementById('loader').style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

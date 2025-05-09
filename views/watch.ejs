@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= video.snippet.title %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #33333300;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .navbar-left .logo {
+      font-size: 22px;
+      color: red;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-center input {
+      width: 500px;
+      height: 40px;
+      border: 2px solid #ccc;
+      border-radius: 20px 0 0 20px;
+      background-color: #42404091;
+      text-align: center;
+      outline: none;
+      color: #fff;
+    }
+
+    .navbar-center button {
+      height: 40px;
+      width: 40px;
+      border: 1px solid #00000000;
+      border-left: none;
+      background-color: #ffffff;
+      border-radius: 0 20px 20px 0;
+      cursor: pointer;
+    }
+
+    .navbar-right i {
+      font-size: 20px;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    /* Sidebar */
+    .main-layout {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 200px;
+      padding: 20px 10px;
+      background: rgb(255, 255, 255);
+      height: calc(100vh - 60px);
+      border-right: 1px solid #494646;
+      position: sticky;
+      top: 60px;
+    }
+    
+    .sidebar ul {
+      list-style: none;
+      color: rgb(0, 0, 0);
+      position: relative;
+      left: 25%;
+      top: 2%;
+    }
+    
+    .sidebar li {
+      margin-bottom: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Container */
+    .container {
+      flex: 1;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .video-title {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .channel-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #333;
+      padding-bottom: 20px;
+    }
+
+    .channel-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .channel-left img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .channel-info h3 {
+      margin: 0;
+      color: #000000;
+    }
+
+    .channel-info p {
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .subscribe-btn {
+      padding: 8px 18px;
+      border: none;
+      background-color: #cc0000;
+      color: #fff;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-save {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background-color: #e50914;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .btn-save:hover {
+      background-color: #b40610;
+    }
+
+    .description {
+      padding: 15px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      border: 1px solid #333;
+      color: #000000;
+      font-size: 16px;
+      white-space: pre-line;
+    }
+    .loader-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid red;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .suc{
+
+      height: 50px;
+      width: 30%;
+      resize: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgb(246, 52, 42);
+      color: white;
+    
+      left: 35%;
+      bottom: 90%;
+      position: absolute;
+      z-index: 1000;
+      font-size: 1vw;
+      border-radius: 0px 0px 10px 10px;
+      border: 1px solid rgb(255, 255, 255);
+      text-transform: capitalize;
+      font-weight: 400;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+   }
+    a{
+      text-decoration: none;
+      color: #000000;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-layout {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      iframe {
+        height: 300px;
+      }
+
+      .video-title {
+        font-size: 22px;
+      }
+
+      .navbar-center input {
+        width: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-overlay" id="loader">
+    <div class="spinner"></div>
+  </div>
+  <% if(suc.length>0) { %>
+    <p class="suc"><%= suc%></p>
+    <% } %>
+  <!-- 🔺 Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <h2 class="logo"><i class="fab fa-youtube"></i> YouTube</h2>
+    </div>
+    <div class="navbar-center">
+      <form action="/" method="GET" style="display: flex;">
+        <input type="text" name="search" placeholder="Search" />
+        <button type="submit"><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+    <div class="navbar-right">
+      <i class="fas fa-video"></i>
+      <i class="fas fa-bell"></i>
+      <a href="/profile"><i class="fas fa-user-circle"></i></a>
+    </div>
+  </nav>
+
+  <!-- 💠 Layout: Sidebar + Content -->
+  <div class="main-layout">
+    
+    <!-- 📂 Sidebar -->
+    <aside class="sidebar">
+      <ul>
+        <li><i class="fas fa-home" style="color: black;"></i> <a style="text-decoration: none;"  href="/home">Home</a></li>
+        <li><i class="fas fa-photo-video" style="color: black;"></i> <a href="/shorts">Shorts</a></li>
+        <li><i class="fas fa-folder" style="color: black;"></i> <a href="/library" target="_blank">Library</a></li>
+        <li><i class="fab fa-youtube" style="color: black;"></i> <a href="/subscribe" target="_blank">Subscribed</a></li>
+        <li><i class="fas fa-user" style="color: black;"></i> <a href="/profile" target="_blank">Profile</a></li>
+      </ul>
+    </aside>
+
+    <!-- 📺 Video Content -->
+    <div class="container">
+      <h1 class="video-title"><%= video.snippet.title %></h1>
+
+      <iframe
+        src="https://www.youtube.com/embed/<%= video.id %>?autoplay=1&modestbranding=1&rel=0&controls=1"
+        allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+
+      <div class="channel-section">
+        <div class="channel-left">
+          <img src="<%= video.snippet.channelLogo %>" alt="Channel Logo">
+          <div class="channel-info">
+            <h3><%= video.snippet.channelTitle %></h3>
+            <p>Subscribers: <%= video.snippet.subscriberCount %></p>
+          </div>
+        </div>
+
+        <form action="/subscribe" method="POST">
+          <input type="hidden" name="channelTitle" value="<%= video.snippet.channelTitle %>">
+          <input type="hidden" name="channelId" value="<%= video.snippet.channelId || 'unknown-id' %>">
+          <input type="hidden" name="channellogo" value="<%= video.snippet.channelLogo %>">
+          <button class="subscribe-btn" type="submit">Subscribe</button>
+        </form>
+      </div>
+
+      <form action="/save/videos" method="post">
+        <input type="hidden" name="id" value="<%= video.id %>">
+        <input type="hidden" name="title" value="<%= video.snippet.title %>">
+        <input type="hidden" name="channelTitle" value="<%= video.snippet.channelTitle %>">
+        <input type="hidden" name="description" value="<%= video.snippet.description %>">
+        <input type="hidden" name="thumbnail" value="<%= video.snippet.thumbnails.medium.url %>">
+        <input type="hidden" name="url" value="https://www.youtube.com/watch?v=<%= video.id %>">
+        <button type="submit" class="btn-save">
+          <i class="fas fa-bookmark"></i> Save to Library
+        </button>
+      </form>
+
+      <div class="description">
+        <p><%= video.snippet.description %></p>
+      </div>
+    </div>
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js" integrity="sha512-f6bQMg6nkSRw/xfHw5BCbISe/dJjXrVGfz9BSDwhZtiErHwk7ifbmBEtF9vFW8UNIQPhV2uEFVyI/UHob9r7Cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/ScrollTrigger.min.js" integrity="sha512-AcqPGqrrAEtEwe+ADO5R8RbdFi7tuU7b/A2cJJH0Im0D18NRk5p5s4B3E5PMuO81KFw0ClN7J5SHVUJz7KOb0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/javascripts/login.js"></script> 
+  <script>
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      loader.style.display = "none";
+    });
+  </script>
+  
+</body>
+</html>
